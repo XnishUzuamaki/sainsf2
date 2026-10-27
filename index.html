@@ -1,1 +1,177 @@
-hello word
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuiz Sains Tingkatan 2</title>
+<style>
+  :root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#617086;--primary:#3157d5;--primary2:#203eaa;--line:#dfe6f1;--good:#147d49;--bad:#b42318;--soft:#edf2ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(160deg,#eef3ff 0%,var(--bg) 45%,#f8fbff 100%);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);line-height:1.5}
+  .wrap{max-width:980px;margin:0 auto;padding:22px 14px 48px}
+  header{background:linear-gradient(135deg,#203eaa,#5278f2);color:#fff;padding:26px;border-radius:22px;box-shadow:0 12px 28px #203eaa20}
+  .tag{display:inline-block;background:#ffffff26;border:1px solid #ffffff55;padding:5px 10px;border-radius:30px;font-size:.82rem;font-weight:700;letter-spacing:.02em}
+  h1{font-size:clamp(1.65rem,4vw,2.45rem);line-height:1.15;margin:13px 0 8px}
+  header p{margin:0;color:#eef2ff;max-width:700px}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0}
+  .toolbar label{font-weight:700;font-size:.92rem}
+  select{max-width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font:inherit}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 20px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px 15px}
+  .stat b{display:block;font-size:1.25rem;color:var(--primary)}
+  .stat span{font-size:.83rem;color:var(--muted)}
+  #quiz{display:grid;gap:14px}
+  .question{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 4px 12px #24365b08}
+  .qtop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+  .qnum{font-weight:800;color:var(--primary);font-size:.88rem;white-space:nowrap}
+  .topic{background:var(--soft);color:var(--primary2);font-size:.76rem;font-weight:750;padding:5px 9px;border-radius:30px;text-align:right}
+  .question h2{font-size:1.03rem;line-height:1.45;margin:8px 0 14px}
+  .options{display:grid;gap:8px}
+  .option{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;transition:.15s}
+  .option:hover{border-color:#9baefb;background:#f8faff}
+  .option input{margin-top:4px;accent-color:var(--primary);flex:0 0 auto}
+  .option span{flex:1}
+  .option.correct{background:#ecfdf3;border-color:#65c995}
+  .option.incorrect{background:#fff1f0;border-color:#ee9b95}
+  .feedback{display:none;margin-top:12px;border-radius:11px;padding:10px 12px;font-size:.92rem}
+  .feedback.show{display:block}
+  .feedback.good{background:#ecfdf3;color:#12633d}
+  .feedback.bad{background:#fff1f0;color:#98231b}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
+  button{border:0;border-radius:12px;padding:12px 17px;font:inherit;font-weight:800;cursor:pointer}
+  .primary{background:var(--primary);color:#fff;box-shadow:0 5px 12px #3157d52b}
+  .primary:hover{background:var(--primary2)}
+  .secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  #result{display:none;background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px;margin-top:20px}
+  #result.show{display:block}
+  #result h2{margin:0 0 4px}
+  .result-big{font-size:2rem;font-weight:900;color:var(--primary)}
+  .progress{height:10px;background:#e8edf6;border-radius:20px;overflow:hidden;margin:10px 0 14px}
+  .progress div{height:100%;background:linear-gradient(90deg,#3157d5,#7b95ff);width:0;transition:width .3s}
+  .note{font-size:.85rem;color:var(--muted);margin-top:18px}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:18px 6px}
+  @media(max-width:560px){.wrap{padding:12px 10px 30px}header{padding:21px 18px;border-radius:17px}.stats{gap:7px}.stat{padding:11px 9px}.stat b{font-size:1.1rem}.stat span{font-size:.76rem}.question{padding:14px}.qtop{flex-direction:column;gap:5px}.topic{text-align:left}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="tag">LATIHAN OBJEKTIF • KSSM</span>
+    <h1>Kuiz Sains Tingkatan 2</h1>
+    <p>Uji kefahaman untuk subtopik yang diminta. Pilih satu jawapan bagi setiap soalan, kemudian tekan <b>Semak Jawapan</b> untuk melihat markah dan penerangan.</p>
+    <div style="margin-top:18px;font-weight:900;letter-spacing:.12em;font-size:.9rem;color:#fff">CREATED-BY XNISH</div>
+  </header>
+  <div class="toolbar">
+    <label for="filter">Pilih topik:</label>
+    <select id="filter" aria-label="Tapis soalan mengikut topik">
+      <option value="all">Semua topik</option>
+    </select>
+    <span id="filterInfo" class="note" style="margin:0">33 soalan keseluruhan</span>
+  </div>
+  <section class="stats" aria-label="Ringkasan kuiz">
+    <div class="stat"><b id="shownCount">33</b><span>Soalan dipaparkan</span></div>
+    <div class="stat"><b id="answeredCount">0</b><span>Jawapan dipilih</span></div>
+    <div class="stat"><b id="scoreCount">—</b><span>Markah selepas semakan</span></div>
+  </section>
+  <main id="quiz"></main>
+  <div class="actions">
+    <button class="primary" id="checkBtn">Semak Jawapan</button>
+    <button class="secondary" id="resetBtn">Cuba Semula</button>
+  </div>
+  <section id="result" aria-live="polite">
+    <h2>Keputusan Kuiz</h2>
+    <div class="result-big" id="resultScore">0/0</div>
+    <div class="progress"><div id="progressBar"></div></div>
+    <p id="resultText"></p>
+  </section>
+  <p class="note">Nota: Ini ialah latihan ulang kaji yang dibina untuk subtopik pilihan anda. Semak juga buku teks dan nota guru untuk istilah serta skop pembelajaran kelas anda.</p>
+  <footer>CREATED-BY XNISH • Kuiz Sains Tingkatan 2</footer>
+</div>
+<script>
+const questions = [
+ {topic:'2.1 — Aliran tenaga dalam ekosistem',q:'Dalam rantai makanan rumput → belalang → katak → ular, organisma yang bertindak sebagai pengeluar ialah …',o:['Belalang','Katak','Rumput','Ular'],a:2,e:'Rumput ialah tumbuhan yang menghasilkan makanan sendiri melalui fotosintesis, jadi rumput ialah pengeluar.'},
+ {topic:'2.1 — Aliran tenaga dalam ekosistem',q:'Anak panah dalam rantai makanan menunjukkan …',o:['Arah pemindahan tenaga','Arah haiwan bergerak','Bilangan organisma','Tempat tinggal organisma'],a:0,e:'Anak panah menunjuk dari organisma yang dimakan kepada organisma yang memakannya, iaitu arah pemindahan tenaga.'},
+ {topic:'2.1 — Aliran tenaga dalam ekosistem',q:'Mengapakah tenaga yang tersedia biasanya semakin berkurang pada aras pengguna yang lebih tinggi?',o:['Semua tenaga disimpan dalam tanah','Sebahagian tenaga digunakan untuk proses hidup dan dibebaskan sebagai haba','Pengguna tidak memerlukan tenaga','Tenaga dicipta oleh pengguna'],a:1,e:'Organisma menggunakan tenaga untuk bergerak, bernafas dan menjalankan proses hidup; sebahagiannya hilang ke persekitaran sebagai haba.'},
+ {topic:'2.2 — Kitar nutrien dalam ekosistem',q:'Apakah peranan pengurai seperti bakteria dan kulat dalam ekosistem?',o:['Menghasilkan cahaya matahari','Menguraikan organisma mati dan mengembalikan nutrien ke persekitaran','Menghentikan semua kitar nutrien','Menukarkan air kepada oksigen sahaja'],a:1,e:'Pengurai menguraikan bahan organik daripada organisma mati dan sisa, lalu mengembalikan nutrien ke tanah atau persekitaran.'},
+ {topic:'2.2 — Kitar nutrien dalam ekosistem',q:'Proses fotosintesis membantu kitar karbon kerana tumbuhan …',o:['Menyerap karbon dioksida dari udara','Menghasilkan semua nitrogen di udara','Menyerap oksigen untuk membuat karbon','Menghentikan pereputan'],a:0,e:'Tumbuhan menyerap karbon dioksida semasa fotosintesis dan menggunakan karbon itu untuk membina bahan organik.'},
+ {topic:'2.2 — Kitar nutrien dalam ekosistem',q:'Antara berikut, yang manakah boleh mengembalikan karbon dioksida ke atmosfera?',o:['Fotosintesis sahaja','Respirasi dan pembakaran','Pembekuan air sahaja','Penurasan'],a:1,e:'Respirasi organisma dan pembakaran bahan api membebaskan karbon dioksida ke atmosfera.'},
+ {topic:'3.2 — Kepentingan gizi seimbang',q:'Apakah maksud gizi seimbang?',o:['Makan satu jenis makanan sahaja','Mengambil semua kelas makanan dalam kuantiti yang sesuai dengan keperluan badan','Tidak mengambil karbohidrat langsung','Makan sebanyak mungkin setiap hari'],a:1,e:'Gizi seimbang membekalkan kelas makanan, air dan serat dalam kuantiti yang sesuai dengan keperluan individu.'},
+ {topic:'3.2 — Kepentingan gizi seimbang',q:'Keperluan tenaga seseorang dipengaruhi oleh …',o:['Warna pakaian sahaja','Umur, jantina, saiz badan dan tahap aktiviti','Nama sekolah sahaja','Waktu matahari terbit sahaja'],a:1,e:'Keperluan tenaga bergantung pada faktor seperti umur, jantina, saiz badan, aktiviti fizikal dan keadaan kesihatan.'},
+ {topic:'3.2 — Kepentingan gizi seimbang',q:'Jika pengambilan tenaga secara berterusan melebihi tenaga yang digunakan, risiko yang meningkat ialah …',o:['Obesiti','Rabun warna','Patah tulang secara automatik','Kekurangan air sahaja'],a:0,e:'Lebihan tenaga boleh disimpan sebagai lemak, lalu meningkatkan risiko berat badan berlebihan dan obesiti.'},
+ {topic:'5.3 — Pembersihan dan pembekalan air',q:'Kaedah manakah sesuai untuk mengasingkan zarah pepejal tidak larut daripada air?',o:['Penurasan','Pembekuan','Pengaratan','Fotosintesis'],a:0,e:'Penurasan menyingkirkan zarah pepejal tidak larut dengan menggunakan medium penuras.'},
+ {topic:'5.3 — Pembersihan dan pembekalan air',q:'Mengapakah air dibekalkan klorin dalam proses rawatan air?',o:['Untuk menambahkan pasir','Untuk membunuh mikroorganisma tertentu','Untuk menjadikan air lebih pekat','Untuk membuang semua garam terlarut melalui penyejatan'],a:1,e:'Pengklorinan digunakan untuk membunuh banyak mikroorganisma berbahaya dalam air.'},
+ {topic:'5.3 — Pembersihan dan pembekalan air',q:'Kaedah yang melibatkan pendidihan air, pemeluwapan wap dan pengumpulan air ialah …',o:['Pengklorinan','Penurasan','Penyulingan','Pengayakan'],a:2,e:'Penyulingan mengewapkan air dan kemudian memeluwapkan wap untuk mengumpulkan air suling.'},
+ {topic:'6.2 — Peneutralan',q:'Apakah hasil utama tindak balas antara asid dengan alkali?',o:['Garam dan air','Oksigen dan hidrogen sahaja','Gula dan kanji','Karbon dan logam'],a:0,e:'Asid + alkali menghasilkan garam dan air. Tindak balas ini dikenali sebagai peneutralan.'},
+ {topic:'6.2 — Peneutralan',q:'Bahan manakah biasa digunakan untuk mengurangkan keasidan tanah pertanian?',o:['Cuka','Kapur pertanian','Jus lemon','Air berkarbonat'],a:1,e:'Kapur pertanian bersifat beralkali dan boleh meneutralkan tanah yang terlalu berasid.'},
+ {topic:'6.2 — Peneutralan',q:'Ubat antasid membantu melegakan ketidakhadaman akibat asid perut kerana antasid …',o:['Bersifat asid kuat','Meneutralkan sebahagian asid berlebihan dalam perut','Menambahkan asid perut','Menukarkan asid kepada oksigen'],a:1,e:'Antasid bersifat bes/alkali dan meneutralkan sebahagian asid hidroklorik berlebihan dalam perut.'},
+ {topic:'7.3 — Kemagnetan',q:'Di bahagian manakah daya tarikan magnet bar biasanya paling kuat?',o:['Di tengah-tengah magnet','Di kedua-dua kutub magnet','Di seluruh ruang dengan kekuatan sama','Di luar magnet sahaja'],a:1,e:'Daya magnet paling kuat di kedua-dua kutub magnet.'},
+ {topic:'7.3 — Kemagnetan',q:'Apakah yang berlaku apabila kutub utara magnet didekatkan kepada kutub utara magnet lain?',o:['Tarik-menarik','Tolak-menolak','Kedua-duanya hilang kemagnetan serta-merta','Tiada daya langsung'],a:1,e:'Kutub yang sama menolak, manakala kutub yang berlainan menarik.'},
+ {topic:'7.3 — Kemagnetan',q:'Apakah bahan teras yang lazim digunakan untuk membina elektromagnet yang kuat dan boleh dimatikan?',o:['Kertas','Kayu','Besi lembut','Kaca'],a:2,e:'Teras besi lembut mudah dimagnetkan apabila arus mengalir dan kehilangan kebanyakan kemagnetannya apabila arus dihentikan.'},
+ {topic:'7.3 — Eksperimen 7.2: Kekuatan medan magnet',q:'Dalam bahagian eksperimen yang mengkaji kesan arus terhadap kekuatan medan magnet, pemboleh ubah dimanipulasikan ialah …',o:['Bilangan jarum peniti yang ditarik','Arus yang mengalir','Bilangan lilitan gegelung yang dikekalkan','Jenis piring Petri'],a:1,e:'Nilai arus diubah (contohnya 0.5 A, 1.0 A dan seterusnya), maka arus ialah pemboleh ubah dimanipulasikan.'},
+ {topic:'7.3 — Eksperimen 7.2: Kekuatan medan magnet',q:'Dalam eksperimen mengkaji kesan arus, bilangan lilitan gegelung dikekalkan sama. Ini ialah pemboleh ubah …',o:['Bergerak balas','Dimanipulasikan','Dimalarkan','Tidak berkaitan'],a:2,e:'Faktor yang dikekalkan sama sepanjang ujian ialah pemboleh ubah dimalarkan.'},
+ {topic:'7.3 — Eksperimen 7.2: Kekuatan medan magnet',q:'Jika arus yang mengalir melalui gegelung elektromagnet meningkat, apakah yang dijangka berlaku?',o:['Medan magnet menjadi lebih kuat dan lebih banyak jarum peniti dapat ditarik','Medan magnet pasti hilang','Bilangan lilitan berubah sendiri','Rod besi menjadi bukan logam'],a:0,e:'Hipotesis eksperimen: semakin besar arus, semakin kuat medan magnet; oleh itu lebih banyak jarum peniti boleh ditarik.'},
+ {topic:'9.4 — Permukaan objek dan haba',q:'Antara permukaan berikut, yang manakah menyerap haba sinaran dengan lebih baik?',o:['Putih dan berkilat','Hitam dan kusam','Lutsinar dan licin sahaja','Putih dan kusam sentiasa paling lemah tanpa pengecualian'],a:1,e:'Permukaan gelap dan kusam menyerap haba sinaran lebih baik berbanding permukaan putih dan berkilat.'},
+ {topic:'9.4 — Permukaan objek dan haba',q:'Permukaan yang membebaskan haba sinaran dengan lebih baik ialah …',o:['Hitam dan kusam','Putih dan berkilat','Cermin yang sangat berkilat sahaja','Semua permukaan sama'],a:0,e:'Permukaan hitam dan kusam juga membebaskan haba sinaran lebih baik.'},
+ {topic:'9.4 — Permukaan objek dan haba',q:'Mengapakah bahagian luar termos yang berkilat membantu mengurangkan pemindahan haba secara sinaran?',o:['Ia menyerap semua haba dengan cepat','Ia memantulkan lebih banyak sinaran haba','Ia menghasilkan haba baharu','Ia menghalang graviti'],a:1,e:'Permukaan berkilat ialah penyerap dan pemancar sinaran haba yang kurang baik, serta memantulkan lebih banyak sinaran.'},
+ {topic:'10.2 — Kenyaringan dan kelangsingan bunyi',q:'Kenyaringan bunyi berkaitan terutamanya dengan …',o:['Amplitud gelombang bunyi','Warna sumber bunyi','Jarak planet','Suhu air sahaja'],a:0,e:'Amplitud yang lebih besar biasanya menghasilkan bunyi yang lebih kuat atau nyaring.'},
+ {topic:'10.2 — Kenyaringan dan kelangsingan bunyi',q:'Kelangsingan bunyi ditentukan oleh …',o:['Frekuensi gelombang bunyi','Bahan berwarna gelap','Kuantiti air','Saiz bilik sahaja'],a:0,e:'Frekuensi yang lebih tinggi menghasilkan bunyi yang lebih tinggi/nyaring dari segi kelangsingan.'},
+ {topic:'10.2 — Kenyaringan dan kelangsingan bunyi',q:'Dua bunyi mempunyai amplitud yang sama tetapi frekuensi berbeza. Ciri yang berbeza ialah …',o:['Kenyaringan sahaja','Kelangsingan','Kelajuan cahaya','Warna objek'],a:1,e:'Apabila frekuensi berbeza, kelangsingan bunyi berbeza walaupun amplitud sama.'},
+ {topic:'11.1 — Bintang dan galaksi dalam alam semesta',q:'Galaksi yang mengandungi Sistem Suria kita dikenali sebagai …',o:['Andromeda','Bima Sakti','Awan Magellan sahaja','Sistem Orion'],a:1,e:'Sistem Suria terletak dalam galaksi Bima Sakti.'},
+ {topic:'11.1 — Bintang dan galaksi dalam alam semesta',q:'Antara warna bintang berikut, yang manakah biasanya menunjukkan suhu permukaan paling tinggi?',o:['Merah','Jingga','Biru','Kuning gelap'],a:2,e:'Secara umum, bintang biru mempunyai suhu permukaan lebih tinggi daripada bintang merah.'},
+ {topic:'11.1 — Bintang dan galaksi dalam alam semesta',q:'Apakah maksud satu tahun cahaya?',o:['Masa yang diambil Bumi mengelilingi Matahari','Jarak yang dilalui cahaya dalam setahun','Umur purata bintang','Masa cahaya sampai ke Bulan sahaja'],a:1,e:'Tahun cahaya ialah unit jarak, bukan unit masa.'},
+ {topic:'12.1 — Sistem Suria',q:'Apakah unit yang sesuai digunakan untuk membandingkan jarak planet daripada Matahari dalam Sistem Suria?',o:['Kilogram','Astronomical unit (a.u.)','Darjah Celsius','Liter'],a:1,e:'Astronomical unit (a.u.) digunakan untuk menyatakan jarak purata Bumi-Matahari dan membandingkan jarak dalam Sistem Suria.'},
+ {topic:'12.1 — Sistem Suria',q:'Planet manakah berada paling hampir dengan Matahari?',o:['Zuhal','Bumi','Utarid','Neptun'],a:2,e:'Utarid ialah planet yang paling hampir dengan Matahari.'},
+ {topic:'12.1 — Sistem Suria',q:'Apakah sebab utama Bumi sesuai menyokong kehidupan seperti yang kita kenali?',o:['Bumi mempunyai keadaan suhu yang sesuai dan air cecair','Bumi paling besar antara semua planet','Bumi tidak menerima cahaya Matahari','Bumi tiada atmosfera'],a:0,e:'Bumi mempunyai gabungan keadaan yang sesuai, termasuk suhu yang membolehkan air wujud sebagai cecair dan atmosfera yang menyokong kehidupan.'}
+];
+
+const quiz = document.getElementById('quiz');
+const filter = document.getElementById('filter');
+const topics = [...new Set(questions.map(x=>x.topic))];
+topics.forEach(topic=>{const opt=document.createElement('option');opt.value=topic;opt.textContent=topic;filter.appendChild(opt)});
+let checked = false;
+let visibleIndices = questions.map((_,i)=>i);
+function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function render(){
+  checked=false; document.getElementById('result').classList.remove('show');
+  const selected=filter.value;
+  visibleIndices=questions.map((q,i)=>({q,i})).filter(x=>selected==='all'||x.q.topic===selected).map(x=>x.i);
+  quiz.innerHTML='';
+  visibleIndices.forEach((index,n)=>{
+    const item=questions[index];
+    const card=document.createElement('section');card.className='question';card.dataset.index=index;
+    card.innerHTML=`<div class="qtop"><span class="qnum">Soalan ${n+1} daripada ${visibleIndices.length}</span><span class="topic">${escapeHTML(item.topic)}</span></div><h2>${escapeHTML(item.q)}</h2><div class="options">${item.o.map((opt,j)=>`<label class="option" data-option="${j}"><input type="radio" name="q${index}" value="${j}"><span><b>${String.fromCharCode(65+j)}.</b> ${escapeHTML(opt)}</span></label>`).join('')}</div><div class="feedback" id="feedback${index}"></div>`;
+    quiz.appendChild(card);
+  });
+  document.getElementById('shownCount').textContent=visibleIndices.length;
+  document.getElementById('filterInfo').textContent=`${visibleIndices.length} soalan dipaparkan`;
+  updateAnswered();document.getElementById('scoreCount').textContent='—';
+}
+function updateAnswered(){let count=visibleIndices.filter(i=>document.querySelector(`input[name="q${i}"]:checked`)).length;document.getElementById('answeredCount').textContent=count;}
+quiz.addEventListener('change',e=>{if(e.target.matches('input[type=radio]')){if(checked)return;updateAnswered()}});
+function checkAnswers(){
+  checked=true;let score=0;
+  visibleIndices.forEach((index,n)=>{
+    const item=questions[index];const chosen=document.querySelector(`input[name="q${index}"]:checked`);const card=quiz.querySelector(`[data-index="${index}"]`);const feedback=document.getElementById(`feedback${index}`);
+    card.querySelectorAll('.option').forEach((el,j)=>{el.classList.remove('correct','incorrect');if(j===item.a)el.classList.add('correct');if(chosen&&Number(chosen.value)===j&&j!==item.a)el.classList.add('incorrect')});
+    if(chosen&&Number(chosen.value)===item.a){score++;feedback.className='feedback show good';feedback.innerHTML='<b>Betul!</b> '+escapeHTML(item.e)}else{feedback.className='feedback show bad';feedback.innerHTML=`<b>${chosen?'Belum tepat.':'Belum dijawab.'}</b> Jawapan: ${String.fromCharCode(65+item.a)}. ${escapeHTML(item.o[item.a])}. ${escapeHTML(item.e)}`}
+  });
+  const total=visibleIndices.length;const pct=total?Math.round(score/total*100):0;
+  document.getElementById('scoreCount').textContent=`${score}/${total}`;
+  document.getElementById('resultScore').textContent=`${score} / ${total} (${pct}%)`;
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('resultText').textContent=pct===100?'Cemerlang! Semua jawapan betul.':pct>=80?'Bagus! Semak penerangan bagi soalan yang tersilap.':pct>=50?'Usaha yang baik. Baca penerangan dan cuba lagi.':'Teruskan latihan. Semak penerangan bagi setiap soalan untuk mengukuhkan kefahaman.';
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function reset(){
+  visibleIndices.forEach(i=>document.querySelectorAll(`input[name="q${i}"]`).forEach(input=>input.checked=false));
+  render();window.scrollTo({top:0,behavior:'smooth'});
+}
+filter.addEventListener('change',render);
+document.getElementById('checkBtn').addEventListener('click',checkAnswers);
+document.getElementById('resetBtn').addEventListener('click',reset);
+render();
+</script>
+</body>
+</html>
+
